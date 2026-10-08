@@ -38,6 +38,11 @@ full=$(mdview --width=100 "$here/examples/sample.md")
 grep -q 'mermaid not drawn' <<<"$full" && bad "a sample diagram failed to render" || ok "every sample diagram renders"
 grep -q $'\x1b\]' <<<"$full" && bad "OSC escapes left in the output" || ok "no OSC escapes in the output"
 
+# A file must not reach the terminal with escapes of its own, in text, labels or a failed diagram.
+printf 'x \033]0;T\007 y\n\n```mermaid\ngraph LR\n  A[a \033]52;c;eA==\007 b] --> B\n```\n\n```mermaid\ngraph LR\n  A[\033[2J --> (((\n```\n' >"$work/esc.md"
+left=$(mdview --width=80 "$work/esc.md" | sed 's/\x1b\[[0-9;]*m//g' | grep -a -c $'\x1b' || :)
+[ "$left" -eq 0 ] && ok "escapes in the file never reach the terminal" || bad "$left line(s) carry the file's own escapes"
+
 if command -v chafa >/dev/null; then
   imgs=$(mdview --images "$here/examples/sample.md" </dev/null | grep -a -o $'\x1b_G[^;]*;' | grep -c 'a=T\|a=t' || :)
   [ "$imgs" -ge "$n" ] && ok "--images draws one picture per diagram" || bad "--images drew $imgs pictures for $n diagrams"

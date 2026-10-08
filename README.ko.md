@@ -41,7 +41,7 @@ macOS에서는 `brew install glow chafa`로 설치해요.
 ## 설치
 
 ```sh
-git clone --branch v0.1.0 https://github.com/devicki/mdview ~/tools/mdview
+git clone --branch v0.1.1 https://github.com/devicki/mdview ~/tools/mdview
 ~/tools/mdview/install.sh
 ```
 
@@ -74,6 +74,7 @@ yazi에서는 `examples/yazi.toml` 설정을 쓰면 이렇게 동작해요.
 - **넓은 다이어그램**: 미리보기 창보다 넓으면 간격을 좁혀 다시 그려요. 그래도 넓으면 창 오른쪽에서 잘려요. 그럴 때는 Enter나 `O`로 전체 화면에서 보세요.
 - **화살표 라벨**: beautiful-mermaid는 화살표 라벨의 띄어쓰기를 선으로 그려요(`$100─결제`). ER 다이어그램의 관계 이름이 상자 테두리와 붙어 보일 때도 있어요.
 - **링크**: glow는 링크에 OSC 8 제어 코드를 붙여요. yazi 미리보기와 less가 이를 글자로 세서 줄이 창 밖으로 밀려나기 때문에, mdview가 지워요.
+- **믿을 수 없는 파일**: 파일 속 제어 문자는 그리기 전에 모두 지워요. 그래서 문서가 mdview를 통해 터미널(제목, OSC 52 클립보드, 링크)을 조작할 수 없어요.
 - **그림**: beautiful-mermaid의 SVG는 CSS `var()`와 `color-mix()`를 쓰는데, chafa가 쓰는 librsvg는 이를 모르기 때문에, mdview가 어두운 터미널에 맞는 실제 색으로 바꿔서 넘겨요.
 - **제목**: `glow-style.json`은 glow dark 테마에서 제목 앞 `##` 표시를 없애고 색으로 구분하게 바꾼 테마예요. 지우면 glow 기본 dark 테마로 돌아가요.
 
@@ -88,7 +89,7 @@ rm -rf ~/tools/mdview ~/.local/bin/mdview   # 그리고 ~/.config/yazi/yazi.toml
 
 ```sh
 npm ci
-./test.sh   # 한글 정렬, 라벨 속 $, CRLF 파일, 링크 제어 코드, 샘플 다이어그램 전체, --images
+./test.sh   # 한글 정렬, 라벨 속 $, CRLF 파일, 링크 제어 코드, 파일 속 제어 문자, 샘플 다이어그램 전체, --images
 ```
 
 릴리스할 때는 `package.json`의 `version`을 올리고, 두 README의 `--branch`를 바꿔 커밋한 뒤 `git tag -a vX.Y.Z -m vX.Y.Z && git push origin vX.Y.Z`를 실행하세요.

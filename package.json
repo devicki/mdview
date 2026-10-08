@@ -1,6 +1,6 @@
 {
   "name": "mdview",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "Markdown in the terminal with its Mermaid diagrams drawn, for the shell and yazi's preview",
   "type": "module",

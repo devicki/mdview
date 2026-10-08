@@ -41,7 +41,7 @@ On macOS: `brew install glow chafa`.
 ## Install
 
 ```sh
-git clone --branch v0.1.0 https://github.com/devicki/mdview ~/tools/mdview
+git clone --branch v0.1.1 https://github.com/devicki/mdview ~/tools/mdview
 ~/tools/mdview/install.sh
 ```
 
@@ -70,6 +70,7 @@ Try it on [`examples/sample.md`](examples/sample.md), which has one diagram of e
 - **Wide diagrams**: when a diagram is wider than the preview, it is redrawn with tighter spacing; if it still does not fit, its right side is cut at the pane's edge. Read it full screen with Enter or `O`.
 - **Edge labels**: beautiful-mermaid draws the spaces of an edge label as the line itself (`$100─pay`), and in ER diagrams a relationship label can touch a box border.
 - **Links**: glow tags links with OSC 8 escapes, which yazi's preview and less count as text and push lines past the edge, so mdview removes them.
+- **Untrusted files**: control characters in a file are removed before anything is drawn, so a document cannot drive your terminal (its title, the clipboard through OSC 52, links) through mdview.
 - **Images**: beautiful-mermaid's SVG uses CSS `var()` and `color-mix()`, which librsvg (chafa) does not support, so mdview fills in plain colors in dark-terminal tones before chafa draws it.
 - **Headings**: `glow-style.json` is glow's dark style with headings shown by color instead of `##` markers. Delete it to use glow's own dark style.
 
@@ -84,7 +85,7 @@ rm -rf ~/tools/mdview ~/.local/bin/mdview   # and the mdview lines in ~/.config/
 
 ```sh
 npm ci
-./test.sh   # Korean alignment, $ in labels, CRLF files, link escapes, every sample diagram, --images
+./test.sh   # Korean alignment, $ in labels, CRLF files, link escapes, escapes in files, every sample diagram, --images
 ```
 
 To release, bump `version` in `package.json`, update the `--branch` in both READMEs, commit, then `git tag -a vX.Y.Z -m vX.Y.Z && git push origin vX.Y.Z`.

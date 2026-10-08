@@ -21,7 +21,10 @@ if (!file) {
 }
 
 // Text and mermaid blocks, in order. A fence closes with the same marker it opened with.
-const src = readFileSync(file, 'utf8').replace(/\r\n/g, '\n');
+// Control characters go before anything is drawn: diagrams are printed as they are, and a file
+// could otherwise drive the terminal (its title, the clipboard through OSC 52, links). Tabs and
+// newlines stay.
+const src = readFileSync(file, 'utf8').replace(/\r\n/g, '\n').replace(/[\x00-\x08\x0b-\x1f\x7f-\x9f]/g, '');
 const FENCE = /^(`{3,}|~{3,})[ \t]*mermaid\b[^\n]*\n([\s\S]*?)^\1[ \t]*$/gm;
 const parts = [];
 let at = 0;

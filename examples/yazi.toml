@@ -1,0 +1,20 @@
+# mdview in yazi: merge these into ~/.config/yazi/yazi.toml. If the file already has [opener],
+# [open] or [plugin], add the entries to those sections instead of repeating the headers.
+
+[opener]
+markdown = [
+  { run = '"$HOME/.local/bin/mdview" %s', block = true, desc = "Read" },
+  { run = '"$HOME/.local/bin/mdview" --images %s', block = true, desc = "Diagrams as images (kitty graphics)" },
+]
+
+[open]
+prepend_rules = [
+  # Enter edits; O offers Read and the diagram images as well.
+  { url = "*.md", use = ["edit", "markdown"] },
+]
+
+[plugin]
+prepend_previewers = [
+  # Hovering a Markdown file previews it rendered, its Mermaid blocks drawn as text.
+  { url = "*.md", run = 'piper -- "$HOME/.local/bin/mdview" --width=$w "$1"' },
+]
